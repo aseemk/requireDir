@@ -30,11 +30,22 @@ module.exports = function requireDir(dir, opts) {
 
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
+        var path = Path.resolve(dir, file);
         var ext = Path.extname(file);
         var base = Path.basename(file, ext);
 
-        if (ext in require.extensions) {
-            map[base] = require(Path.resolve(dir, file));
+        // is this a directory?
+        if (FS.statSync(path).isDirectory()) {
+            // if so, recurse if specified:
+            if (opts.recurse) {
+                map[base] = requireDir(path, opts);
+            // otherwise ignore:
+            } else {
+                continue;
+            }
+        // otherwise, if a regular file, require() if require()'able:
+        } else if (ext in require.extensions) {
+            map[base] = require(path);
         }
     }
 
