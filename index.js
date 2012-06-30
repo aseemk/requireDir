@@ -62,6 +62,11 @@ module.exports = function requireDir(dir, opts) {
             var file = files[i];
             var path = Path.resolve(dir, file);
 
+            // ignore the calling file:
+            if (path === parentFile) {
+                continue;
+            }
+
             if (FS.statSync(path).isDirectory()) {
                 if (opts.recurse) {
                     map[base] = requireDir(path, opts);
