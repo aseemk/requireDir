@@ -1,0 +1,16 @@
+{ "name": "requireDir"
+, "description": "Helper to require() directories."
+, "version": "0.0.0"
+, "author": "Aseem Kishore <aseem.kishore@gmail.com>"
+, "dependencies": {}
+, "devDependencies": {}
+, "engines":
+  { "node": "*"
+  }
+, "scripts": {}
+, "homepage": "https://github.com/aseemk/requireDir"
+, "repository":
+  { "type": "git"
+  , "url": "git://github.com/aseemk/requireDir.git"
+  }
+}
