@@ -24,28 +24,72 @@ module.exports = function requireDir(dir, opts) {
     // note that this'll throw an error if the path isn't a directory.
     var files = FS.readdirSync(dir);
 
-    // go through them and require() the ones that can be, and create and
-    // return a map from basename to returned contents!
-    var map = {};
+    // to prioritize between multiple files with the same basename, we'll
+    // first derive all the basenames and create a map from them to files:
+    var filesForBase = {};
 
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
-        var path = Path.resolve(dir, file);
         var ext = Path.extname(file);
         var base = Path.basename(file, ext);
 
-        // is this a directory?
-        if (FS.statSync(path).isDirectory()) {
-            // if so, recurse if specified:
-            if (opts.recurse) {
-                map[base] = requireDir(path, opts);
-            // otherwise ignore:
+        (filesForBase[base] = filesForBase[base] || []).push(file);
+    }
+
+    // then we'll go through each basename, and first check if any of the
+    // basenames' files are directories, since directories take precedence if
+    // we're recursing and can be ignored if we're not. if a basename has no
+    // directory, then we'll follow Node's own require() algorithm of going
+    // through and trying the require.extension keys in order. in the process,
+    // we create and return a map from basename to require()'d contents!
+    var map = {};
+
+    for (var base in filesForBase) {
+        // protect against enumerable object prototype extensions:
+        if (!filesForBase.hasOwnProperty(base)) {
+            continue;
+        }
+
+        // go through the files for this base and check for directories. we'll
+        // also create a hash "set" of the non-dir files so that we can
+        // efficiently check for existence in the next step:
+        var files = filesForBase[base];
+        var filesMinusDirs = {};
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var path = Path.resolve(dir, file);
+
+            if (FS.statSync(path).isDirectory()) {
+                if (opts.recurse) {
+                    map[base] = requireDir(path, opts);
+                }
             } else {
+                filesMinusDirs[file] = path;
+            }
+        }
+
+        // if we're recursing and already encountered a directory for this
+        // basename, we're done for this basename:
+        if (map[base]) {
+            continue;
+        }
+
+        // otherwise, go through and try each require.extension key!
+        for (ext in require.extensions) {
+            // again protect against enumerable object prototype extensions:
+            if (!require.extensions.hasOwnProperty(ext)) {
                 continue;
             }
-        // otherwise, if a regular file, require() if require()'able:
-        } else if (ext in require.extensions) {
-            map[base] = require(path);
+
+            // if a file exists with this extension, we'll require() it:
+            var file = base + ext;
+            var path = filesMinusDirs[file];
+
+            if (path) {
+                map[base] = require(path);
+                break;
+            }
         }
     }
 
