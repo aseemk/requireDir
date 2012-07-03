@@ -29,15 +29,18 @@ And if CoffeeScript was registered, `c.coffee` will also be returned.
 ## Installation
 
 ```
-npm install requireDir
+npm install require-dir
 ```
+
+Note that this package is *not* `requireDir` — turns out that's already
+[taken](https://github.com/JamesEggers1/node-requiredir)! ;)
 
 ## Usage
 
 Basic usage that examines only directories' immediate files:
 
 ```js
-var requireDir = require('requireDir');
+var requireDir = require('require-dir');
 var dir = requireDir('./path/to/dir');
 ```
 
@@ -79,7 +82,7 @@ If you want to `require()` the same directory in multiple places, you can do
 this in the directory itself! Just make an `index.js` file with the following:
 
 ```js
-module.exports = require('requireDir')();   // defaults to '.'
+module.exports = require('require-dir')();   // defaults to '.'
 ```
 
 And don't worry, the calling file is always ignored to prevent infinite loops.

@@ -1,4 +1,4 @@
-{ "name": "requireDir"
+{ "name": "require-dir"
 , "description": "Helper to require() directories."
 , "version": "0.0.0"
 , "author": "Aseem Kishore <aseem.kishore@gmail.com>"
