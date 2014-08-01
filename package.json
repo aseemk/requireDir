@@ -2,6 +2,7 @@
 , "description": "Helper to require() directories."
 , "version": "0.1.0"
 , "author": "Aseem Kishore <aseem.kishore@gmail.com>"
+, "license": "MIT"
 , "dependencies": {}
 , "devDependencies":
   { "coffee-script": "~1.3.3"
