@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/aseemk/requireDir.svg?branch=master)](https://travis-ci.org/aseemk/requireDir)
+
 # requireDir()
 
 Node helper to `require()` directories. The directory's files are examined,
