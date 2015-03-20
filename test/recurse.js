@@ -1,8 +1,4 @@
 var assert = require('assert');
-var mkdirp = require('mkdirp');
-var path = require('path');
-var fs = require('fs');
-
 var requireDir = require('..');
 
 // first test without recursing:
@@ -11,14 +7,6 @@ assert.deepEqual(requireDir('./recurse'), {
 });
 
 // then test with recursing:
-var dir = path.join(__dirname, 'recurse', 'node_modules');
-try {
-    fs.statSync(path.join(dir, 'fake.js'));
-} catch (e) {
-    mkdirp.sync(dir);
-    fs.writeFileSync(path.join(dir, 'fake.js'), 'module.exports = "ignore";');
-}
-
 assert.deepEqual(requireDir('./recurse', {recurse: true}), {
     a: 'a',
     b: {
@@ -31,6 +19,12 @@ assert.deepEqual(requireDir('./recurse', {recurse: true}), {
     c: {
         '3': 3
     },
+    // note that node_modules was explicitly ignored
+});
+
+// finally, test that node_modules can still be required directly:
+assert.deepEqual(requireDir('./recurse/node_modules'), {
+    fake: 'fake',
 });
 
 console.log('Recurse tests passed.');

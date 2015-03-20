@@ -72,6 +72,7 @@ module.exports = function requireDir(dir, opts) {
                     if (base === 'node_modules') {
                         continue;
                     }
+
                     map[base] = requireDir(path, opts);
 
                     // if duplicates are wanted, key off the full name too:
