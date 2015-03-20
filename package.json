@@ -1,6 +1,6 @@
 { "name": "require-dir"
 , "description": "Helper to require() directories."
-, "version": "0.1.0"
+, "version": "0.2.0"
 , "author": "Aseem Kishore <aseem.kishore@gmail.com>"
 , "license": "MIT"
 , "dependencies": {}
