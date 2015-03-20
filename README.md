@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/aseemk/requireDir.svg?branch=master)](https://travis-ci.org/aseemk/requireDir)
+[![npm version](https://badge.fury.io/js/require-dir.svg)](http://badge.fury.io/js/require-dir)
 
 # requireDir()
 
@@ -26,7 +27,8 @@ dir
 }
 ```
 
-And if CoffeeScript was registered, `c.coffee` will also be returned.
+And if CoffeeScript has been registered via `require('coffee-script/register')`,
+`c.coffee` will also be returned.
 
 ## Installation
 
@@ -108,4 +110,4 @@ this behavior should be customizable. This is hopefully an edge case.
 
 ## License
 
-MIT. &copy; 2012 Aseem Kishore.
+MIT. &copy; 2012-2015 Aseem Kishore.
