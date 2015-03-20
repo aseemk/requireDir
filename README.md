@@ -55,6 +55,7 @@ var dir = requireDir('./path/to/dir', {recurse: true});
 ## Options
 
 `recurse`: Whether to recursively `require()` subdirectories too.
+(`node_modules` within subdirectories will be ignored.)
 Default is false.
 
 `duplicates`: By default, if multiple files share the same basename, only the
