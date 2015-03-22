@@ -16,6 +16,7 @@ module.exports = function requireDir(dir, opts) {
     // default arguments:
     dir = dir || '.';
     opts = opts || {};
+    var camelcase = !!opts.camelcase;
 
     // resolve the path to an absolute one:
     dir = Path.resolve(parentDir, dir);
@@ -120,5 +121,22 @@ module.exports = function requireDir(dir, opts) {
         }
     }
 
+    if (opts.camelcase) {
+        for (var base in map) {
+            // protect against enumerable object prototype extensions:
+            if (!map.hasOwnProperty(base)) {
+                continue;
+            }
+
+            map[toCamelCase(base)] = map[base];
+        }
+    }
+
     return map;
 };
+
+function toCamelCase(str) {
+    return str.replace(/[_-][a-z]/ig, function (s) {
+        return s.substring(1).toUpperCase();
+    });
+}

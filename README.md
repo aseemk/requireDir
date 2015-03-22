@@ -60,6 +60,10 @@ var dir = requireDir('./path/to/dir', {recurse: true});
 (`node_modules` within subdirectories will be ignored.)
 Default is false.
 
+`camelcase`: Automatically add camelcase aliases for files with dash- and
+underscore-separated names. E.g. `foo-bar.js` will be exposed under both the
+original `'foo-bar'` name as well as a `'fooBarBaz'` alias. Default is false.
+
 `duplicates`: By default, if multiple files share the same basename, only the
 highest priority one is `require()`'d and returned. (Priority is determined by
 the order of `require.extensions` keys, with directories taking precedence
