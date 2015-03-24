@@ -16,7 +16,6 @@ module.exports = function requireDir(dir, opts) {
     // default arguments:
     dir = dir || '.';
     opts = opts || {};
-    var camelcase = !!opts.camelcase;
 
     // resolve the path to an absolute one:
     dir = Path.resolve(parentDir, dir);
