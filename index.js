@@ -24,17 +24,35 @@ module.exports = function requireDir(dir, opts) {
     // note that this'll throw an error if the path isn't a directory.
     var files = FS.readdirSync(dir);
 
+    // TODO: Want to remove files added to "reject" filter
+    // `files` above returns an array so possible solution
+    // Iterate through opts.ignore
+    // If file passed as `opt.ignore` then remove from `files`
+
     // to prioritize between multiple files with the same basename, we'll
     // first derive all the basenames and create a map from them to files:
     var filesForBase = {};
 
     for (var i = 0; i < files.length; i++) {
+
+        if (opts.ignore && opts.ignore.length > 0) {
+            files = files.filter( function(elem) {
+                for (var j = 0; j<opts.ignore.length; j++) {
+                    if (elem.indexOf(opts.ignore[j]) !== -1) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+        }
+
         var file = files[i];
         var ext = Path.extname(file);
         var base = Path.basename(file, ext);
 
         (filesForBase[base] = filesForBase[base] || []).push(file);
     }
+
 
     // then we'll go through each basename, and first check if any of the
     // basenames' files are directories, since directories take precedence if
