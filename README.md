@@ -83,6 +83,10 @@ be the same by default, but specifying `duplicates: true` would yield:
 }
 ```
 
+`ignore`: Include files you wish to ignore as an array of strings in options 
+object. Files included will not be in outputted object, for example, 
+`ignore: ['d']` or equivalently `ignore: ['d.json']` will remove `d.json`.
+
 There might be more options in the future. ;)
 
 ## Tips
