@@ -126,8 +126,17 @@ module.exports = function requireDir(dir, opts) {
             if (!map.hasOwnProperty(base)) {
                 continue;
             }
-
             map[toCamelCase(base)] = map[base];
+        }
+    }
+
+    if (opts.uppercase) {
+        for (var base in map) {
+            // protect against enumerable object prototype extensions:
+            if (!map.hasOwnProperty(base)) {
+                continue;
+            }
+            map[uppercase(base)] = map[base];
         }
     }
 
@@ -138,4 +147,9 @@ function toCamelCase(str) {
     return str.replace(/[_-][a-z]/ig, function (s) {
         return s.substring(1).toUpperCase();
     });
+}
+
+function uppercase(str) {
+    var camel = toCamelCase(str);
+    return camel.charAt(0).toUpperCase() + camel.substring(1);
 }
