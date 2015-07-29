@@ -6,14 +6,8 @@ assert.deepEqual(requireDir('./camelcase', {
     camelcase: true
 }), {
     aMain: 'a main',
-    'a_main': 'a main',
     subDir: {
-        aSub: 'a sub',
-        'a-sub': 'a sub'
-    },
-    'sub-dir': {
-        aSub: 'a sub',
-        'a-sub': 'a sub'
+        aSub: 'a sub'
     }
 });
 

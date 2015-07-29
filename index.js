@@ -122,12 +122,9 @@ module.exports = function requireDir(dir, opts) {
 
     if (opts.camelcase) {
         for (var base in map) {
-            // protect against enumerable object prototype extensions:
-            if (!map.hasOwnProperty(base)) {
-                continue;
-            }
-
-            map[toCamelCase(base)] = map[base];
+            var module = map[base];
+            delete map[base];
+            map[toCamelCase(base)] = module;
         }
     }
 
