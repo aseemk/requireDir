@@ -83,6 +83,26 @@ be the same by default, but specifying `duplicates: true` would yield:
 }
 ```
 
+`args`: If specified, it is assumed that all loaded modules export a single function that should be directly invoked with the provided value (passed as is as a single parameter). If any of the loaded modules does not return a function, an error is thrown. Example assuming that modules 'a' and 'b' are present in the specified directory:
+```js
+
+// ./path/to/dir/a.js
+module.exports = function(args){
+    console.log(args); // 'foo'
+};
+
+// ./path/to/dir/b.js
+module.exports = function(args){
+    console.log(args); // 'foo'
+};
+
+// loading
+requireDir('./path/to/dir', {args: 'foo'});
+// 'a' and 'b' will be loaded and the function they return will be invoked as follows:
+// require('./path/to/dir/a.js')('foo');
+// require('./path/to/dir/b.js')('foo');
+```
+
 There might be more options in the future. ;)
 
 ## Tips
