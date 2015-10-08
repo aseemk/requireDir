@@ -103,17 +103,32 @@ module.exports = function requireDir(dir, opts) {
             var path = filesMinusDirs[file];
 
             if (path) {
+                var requiredModule;
+
                 // if duplicates are wanted, key off the full name always, and
                 // also the base if it hasn't been taken yet (since this ext
                 // has higher priority than any that follow it). if duplicates
                 // aren't wanted, we're done with this basename.
                 if (opts.duplicates) {
-                    map[file] = require(path);
+                    if(opts.args) {
+                        requiredModule = require(path);
+                        ensureExportsFunction(requiredModule, path); // fail fast if not as expected
+                        map[file] = requiredModule(opts.args);
+                    } else {
+                        map[file] = require(path);
+                    }
+
                     if (!map[base]) {
                         map[base] = map[file];
                     }
                 } else {
-                    map[base] = require(path);
+                    if(opts.args) {
+                        requiredModule = require(path);
+                        ensureExportsFunction(requiredModule, path); // fail fast if not as expected
+                        map[base] = requiredModule(opts.args);
+                    } else {
+                        map[base] = require(path);
+                    }
                     break;
                 }
             }
@@ -138,4 +153,10 @@ function toCamelCase(str) {
     return str.replace(/[_-][a-z]/ig, function (s) {
         return s.substring(1).toUpperCase();
     });
+}
+
+function ensureExportsFunction(moduleToCheck, path){
+    if(typeof moduleToCheck !== 'function'){
+        throw new Error("The 'args' option was specified in the options but the following module does not return a function: "+path);
+    }
 }
