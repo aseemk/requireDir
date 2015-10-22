@@ -58,6 +58,8 @@ module.exports = function requireDir(dir, opts) {
             order.sort(opts.sort);
         }
     }
+    if (opts.debug) console.log("require-dir options: ", opts);
+    if (opts.debug) console.log("require-dir sorted order: ", order);
 
     // then we'll go through each basename, and first check if any of the
     // basenames' files are directories, since directories take precedence if
@@ -71,6 +73,7 @@ module.exports = function requireDir(dir, opts) {
 
     for (var j = 0, len = order.length; j < len; j++) {
         var base = order[j];
+        if (opts.debug) console.log("[require-dir] check: ", base);
 
         // protect against enumerable object prototype extensions:
         if (!filesForBase.hasOwnProperty(base)) {
@@ -133,11 +136,13 @@ module.exports = function requireDir(dir, opts) {
                 // has higher priority than any that follow it). if duplicates
                 // aren't wanted, we're done with this basename.
                 if (opts.duplicates) {
+                    if (opts.debug) console.log("[require-dir] require: ", path);
                     map[file] = require(path);
                     if (!map[base]) {
                         map[base] = map[file];
                     }
                 } else {
+                    if (opts.debug) console.log("[require-dir] require: ", path);
                     map[base] = require(path);
                     break;
                 }

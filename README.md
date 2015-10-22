@@ -91,6 +91,11 @@ via this option.
 
 Default is false.
 
+`debug`: Produce some diagnostics output to help analyze requireDir's behaviour.
+Particularly useful in conjunction with the `sort` option.
+
+Default is false.
+
 There might be more options in the future. ;)
 
 ## Tips
