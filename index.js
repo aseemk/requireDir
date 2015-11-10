@@ -68,6 +68,17 @@ module.exports = function requireDir(dir, opts) {
             }
 
             if (FS.statSync(path).isDirectory()) {
+
+                // If we're not recursing through the files then we check to see
+                // if the folder is a valid node module
+
+                // Checks to see if there is an index file and returns the extension
+                var modulePath = getModulePath(path);
+
+                if (modulePath && !opts.recurse) {
+                    filesMinusDirs[file + Path.extname(modulePath)] = modulePath;
+                }
+
                 if (opts.recurse) {
                     if (base === 'node_modules') {
                         continue;
@@ -100,6 +111,7 @@ module.exports = function requireDir(dir, opts) {
 
             // if a file exists with this extension, we'll require() it:
             var file = base + ext;
+
             var path = filesMinusDirs[file];
 
             if (path) {
@@ -133,6 +145,14 @@ module.exports = function requireDir(dir, opts) {
 
     return map;
 };
+
+function getModulePath(path) {
+    try {
+        return require.resolve(path);
+    } catch (_) {
+        return false;
+    }
+}
 
 function toCamelCase(str) {
     return str.replace(/[_-][a-z]/ig, function (s) {
