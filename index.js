@@ -68,8 +68,6 @@ module.exports = function requireDir(dir, opts) {
             }
 
             if (FS.statSync(path).isDirectory()) {
-
-
                 if (opts.recurse) {
                     if (base === 'node_modules') {
                         continue;
