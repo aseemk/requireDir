@@ -69,15 +69,6 @@ module.exports = function requireDir(dir, opts) {
 
             if (FS.statSync(path).isDirectory()) {
 
-                // If we're not recursing through the files then we check to see
-                // if the folder is a valid node module
-
-                // Checks to see if there is an index file and returns the extension
-                var modulePath = getModulePath(path);
-
-                if (modulePath && !opts.recurse) {
-                    filesMinusDirs[file + Path.extname(modulePath)] = modulePath;
-                }
 
                 if (opts.recurse) {
                     if (base === 'node_modules') {
@@ -90,6 +81,17 @@ module.exports = function requireDir(dir, opts) {
                     if (opts.duplicates) {
                         map[file] = map[base];
                     }
+                } else {
+                    // If we're not recursing through the files then we check to see
+                    // if the folder is a valid node module
+
+                    // Checks to see if there is an index file and returns the extension
+                    var modulePath = getModulePath(path);
+
+                    if (modulePath && !opts.recurse) {
+                        filesMinusDirs[file + Path.extname(modulePath)] = modulePath;
+                    }
+
                 }
             } else {
                 filesMinusDirs[file] = path;
@@ -149,8 +151,8 @@ module.exports = function requireDir(dir, opts) {
 function getModulePath(path) {
     try {
         return require.resolve(path);
-    } catch (_) {
-        return false;
+    } catch (err) {
+        return null;
     }
 }
 
