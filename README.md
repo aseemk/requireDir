@@ -54,6 +54,13 @@ You can optionally customize the behavior by passing an extra options object:
 var dir = requireDir('./path/to/dir', {recurse: true});
 ```
 
+## Directory as Modules
+
+As per [the node documentation](https://nodejs.org/api/modules.html#modules_folders_as_modules)
+directories that resolve to a module will be treated as such when recursion is **not** enabled.
+For example, if you have a folder called 'foo' with 'index.js' inside, requireDir will return the
+contents of index.js on its object.
+
 ## Options
 
 `recurse`: Whether to recursively `require()` subdirectories too.
