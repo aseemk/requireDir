@@ -107,6 +107,9 @@ module.exports = function requireDir(dir, opts) {
                 // also the base if it hasn't been taken yet (since this ext
                 // has higher priority than any that follow it). if duplicates
                 // aren't wanted, we're done with this basename.
+                if (opts.noCache) {
+                    delete require.cache[path];
+                }
                 if (opts.duplicates) {
                     map[file] = require(path);
                     if (!map[base]) {
