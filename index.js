@@ -81,7 +81,31 @@ module.exports = function requireDir(dir, opts) {
                     }
                 }
             } else {
-                filesMinusDirs[file] = path;
+
+                // before adding a path to fileMinusDirs list we
+                // check, if it is not ignored
+                if (opts.ignore) {
+
+                    // string options are wrapped with an array
+                    // in order to make the algorithm clearer
+                    if (!Array.isArray(opts.ignore)) {
+                        opts.ignore = [opts.ignore];
+                    }
+
+                    // every ignore pattern is interpreted as RegExp,
+                    // a file path is to be tested against
+                    var isIgnored = opts.ignore.find((value)=>{
+                        return path.match(new RegExp(value));
+                    });
+
+                    if (!isIgnored) {
+                        filesMinusDirs[file] = path;
+                    }
+
+                } else {
+                    filesMinusDirs[file] = path;
+                }
+
             }
         }
 
