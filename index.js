@@ -94,8 +94,12 @@ module.exports = function requireDir(dir, opts) {
 
                     // every ignore pattern is interpreted as RegExp,
                     // a file path is to be tested against
-                    var isIgnored = opts.ignore.find(function(value){
-                        return path.match(new RegExp(value));
+                    var isIgnored=false;
+                    opts.ignore.forEach(function(value){
+                        if(path.match(new RegExp(value))){
+                            isIgnored=true;
+                            return;
+                        }
                     });
 
                     if (!isIgnored) {
