@@ -11,11 +11,14 @@ var parent = module.parent;
 var parentFile = parent.filename;
 var parentDir = Path.dirname(parentFile);
 delete require.cache[__filename];
+var defaultExtensions = {}
 
 module.exports = function requireDir(dir, opts) {
     // default arguments:
     dir = dir || '.';
     opts = opts || {};
+    var extensions = Object.assign({}, defaultExtensions, opts.extensions || {})
+    var supportedFileExtensions = Object.keys(require.extensions).concat(Object.keys(extensions))
 
     // resolve the path to an absolute one:
     dir = Path.resolve(parentDir, dir);
@@ -92,10 +95,17 @@ module.exports = function requireDir(dir, opts) {
         }
 
         // otherwise, go through and try each require.extension key!
-        for (ext in require.extensions) {
-            // again protect against enumerable object prototype extensions:
-            if (!require.extensions.hasOwnProperty(ext)) {
-                continue;
+        for (var n in supportedFileExtensions) {
+            var requireFn
+            var ext = supportedFileExtensions[n]
+
+            // again protect against enumerable object prototype extensions
+            if (extensions.hasOwnProperty(ext)) {
+              requireFn = extensions[ext]
+            } else if (require.extensions.hasOwnProperty(ext)) {
+              requireFn = require
+            } else {
+              continue
             }
 
             // if a file exists with this extension, we'll require() it:
@@ -108,12 +118,12 @@ module.exports = function requireDir(dir, opts) {
                 // has higher priority than any that follow it). if duplicates
                 // aren't wanted, we're done with this basename.
                 if (opts.duplicates) {
-                    map[file] = require(path);
+                    map[file] = requireFn(path);
                     if (!map[base]) {
                         map[base] = map[file];
                     }
                 } else {
-                    map[base] = require(path);
+                    map[base] = requireFn(path);
                     break;
                 }
             }
@@ -138,4 +148,8 @@ function toCamelCase(str) {
     return str.replace(/[_-][a-z]/ig, function (s) {
         return s.substring(1).toUpperCase();
     });
+}
+
+module.exports.defaultExtensions = function _defaultExtensions(extensions) {
+  defaultExtensions = Object.assign(defaultExtensions, extensions)
 }

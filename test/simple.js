@@ -1,5 +1,6 @@
 var assert = require('assert');
 var requireDir = require('..');
+var FS = require('fs');
 
 // first test regularly:
 assert.deepEqual(requireDir('./simple'), {
@@ -15,6 +16,28 @@ assert.deepEqual(requireDir('./simple'), {
     a: 'a',
     b: 'b',
     c: 'c',
+});
+
+var extensions = {
+    '.txt': function (filename) {
+        return FS.readFileSync(filename, 'utf8');
+    }
+};
+
+assert.deepEqual(requireDir('./simple', { extensions: extensions }), {
+    a: 'a',
+    b: 'b',
+    c: 'c',
+    d: 'd\n'
+});
+
+requireDir.defaultExtensions(extensions);
+
+assert.deepEqual(requireDir('./simple'), {
+    a: 'a',
+    b: 'b',
+    c: 'c',
+    d: 'd\n'
 });
 
 console.log('Simple tests passed.');
