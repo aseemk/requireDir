@@ -83,6 +83,8 @@ be the same by default, but specifying `duplicates: true` would yield:
 }
 ```
 
+`esMap`: Whether to return ES2015 Map instead of a plain object.
+
 There might be more options in the future. ;)
 
 ## Tips
