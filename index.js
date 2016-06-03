@@ -17,6 +17,8 @@ module.exports = function requireDir(dir, opts) {
     dir = dir || '.';
     opts = opts || {};
 
+    opts.filter = opts.filter || function (file) { return true; };
+
     // resolve the path to an absolute one:
     dir = Path.resolve(parentDir, dir);
 
@@ -27,14 +29,39 @@ module.exports = function requireDir(dir, opts) {
     // to prioritize between multiple files with the same basename, we'll
     // first derive all the basenames and create a map from them to files:
     var filesForBase = {};
+    var order = [];
 
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
         var ext = Path.extname(file);
         var base = Path.basename(file, ext);
 
-        (filesForBase[base] = filesForBase[base] || []).push(file);
+        if (!filesForBase[base]) {
+            //order.push(base);
+            filesForBase[base] = [];
+        }
+        filesForBase[base].push(file);
     }
+
+    for (var base in filesForBase) {
+        order.push(base);
+    }
+
+    if (opts.sort) {
+        if (typeof opts.sort !== 'function') {
+            order.sort(function (a, b) {
+                a = 'x' + a;
+                b = 'x' + b;
+                if (a < b) return -1;
+                if (a > b) return 1;
+                return 0;
+            });
+        } else {
+            order.sort(opts.sort);
+        }
+    }
+    if (opts.debug) console.log("require-dir options: ", opts);
+    if (opts.debug) console.log("require-dir sorted order: ", order);
 
     // then we'll go through each basename, and first check if any of the
     // basenames' files are directories, since directories take precedence if
@@ -46,7 +73,10 @@ module.exports = function requireDir(dir, opts) {
     // to the map using the full filename as a key also.
     var map = {};
 
-    for (var base in filesForBase) {
+    for (var j = 0, len = order.length; j < len; j++) {
+        var base = order[j];
+        if (opts.debug) console.log("[require-dir] check: ", base);
+
         // protect against enumerable object prototype extensions:
         if (!filesForBase.hasOwnProperty(base)) {
             continue;
@@ -64,6 +94,10 @@ module.exports = function requireDir(dir, opts) {
 
             // ignore the calling file:
             if (path === parentFile) {
+                continue;
+            }
+            // apply file filter:
+            if (!opts.filter(path)) {
                 continue;
             }
 
@@ -108,11 +142,13 @@ module.exports = function requireDir(dir, opts) {
                 // has higher priority than any that follow it). if duplicates
                 // aren't wanted, we're done with this basename.
                 if (opts.duplicates) {
+                    if (opts.debug) console.log("[require-dir] require: ", path);
                     map[file] = require(path);
                     if (!map[base]) {
                         map[base] = map[file];
                     }
                 } else {
+                    if (opts.debug) console.log("[require-dir] require: ", path);
                     map[base] = require(path);
                     break;
                 }
@@ -128,6 +164,12 @@ module.exports = function requireDir(dir, opts) {
             }
 
             map[toCamelCase(base)] = map[base];
+
+            if (opts.removeCase) {
+                if (toCamelCase(base) !== base) {
+                    delete map[base];
+                }
+            }
         }
     }
 
