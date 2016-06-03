@@ -158,6 +158,13 @@ module.exports = function requireDir(dir, opts) {
             }
 
             map[toCamelCase(base)] = map[base];
+
+            if (opts.removeCase) {
+                if (toCamelCase(base) !== base) {
+                    delete map[base];
+                }
+            }
+
         }
     }
 
