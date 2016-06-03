@@ -83,6 +83,14 @@ be the same by default, but specifying `duplicates: true` would yield:
 }
 ```
 
+`filter`: Apply a filter on the filename before require-ing. For example:
+
+```js
+requiredir('./dir', function (f) { return process.env.NODE_ENV !== 'production' && !f.match(/$dev/); })
+```
+
+This will ignore files prefixed with `dev` if running in a production environment.
+
 `sort`: Load the modules in sorted order per directory. Not all platforms
 produce a directory listing in canonical sorted order (e.g. Windows/NTFS)
 and it should not matter, ideally, but when it does, you can set `sort` to `true`
