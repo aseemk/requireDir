@@ -164,7 +164,6 @@ module.exports = function requireDir(dir, opts) {
                     delete map[base];
                 }
             }
-
         }
     }
 
