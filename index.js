@@ -103,6 +103,12 @@ module.exports = function requireDir(dir, opts) {
             var path = filesMinusDirs[file];
 
             if (path) {
+                // ignore TypeScript declaration files. They should never be
+                // `require`d
+                if (/\.d\.ts$/.test(path)) {
+                    continue;
+                }
+
                 // if duplicates are wanted, key off the full name always, and
                 // also the base if it hasn't been taken yet (since this ext
                 // has higher priority than any that follow it). if duplicates
