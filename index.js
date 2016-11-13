@@ -12,6 +12,11 @@ var parentFile = parent.filename;
 var parentDir = Path.dirname(parentFile);
 delete require.cache[__filename];
 
+var _require = function(path) {
+  const obj = require(path);
+  return obj.default ? obj.default : obj;
+};
+
 module.exports = function requireDir(dir, opts) {
     // default arguments:
     dir = dir || '.';
@@ -114,12 +119,12 @@ module.exports = function requireDir(dir, opts) {
                 // has higher priority than any that follow it). if duplicates
                 // aren't wanted, we're done with this basename.
                 if (opts.duplicates) {
-                    map[file] = require(path);
+                    map[file] = _require(path);
                     if (!map[base]) {
                         map[base] = map[file];
                     }
                 } else {
-                    map[base] = require(path);
+                    map[base] = _require(path);
                     break;
                 }
             }
