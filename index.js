@@ -91,10 +91,13 @@ module.exports = function requireDir(dir, opts) {
             continue;
         }
 
+        // Node v8+ uses "clean" objects w/o hasOwnProperty for require
+        var hasExt = require.extensions.hasOwnProperty || function(ext) { return require.extensions[ext]; };
+
         // otherwise, go through and try each require.extension key!
         for (ext in require.extensions) {
             // again protect against enumerable object prototype extensions:
-            if (!require.extensions.hasOwnProperty(ext)) {
+            if (!hasExt(ext)) {
                 continue;
             }
 
