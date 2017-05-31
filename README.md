@@ -83,6 +83,12 @@ be the same by default, but specifying `duplicates: true` would yield:
 }
 ```
 
+`ignore`: Include files or directories you wish to ignore as an array of strings 
+in options object. Files/directoires included will not be in outputted object, 
+for example, `ignore: ['d']` or equivalently `ignore: ['d.json']` will remove 
+`d.json`. To exclude a subdirectory, just include to directory name only e.g. to
+if `c` with path `a/b/c` write as `ignore: ['c'].
+
 There might be more options in the future. ;)
 
 ## Tips
