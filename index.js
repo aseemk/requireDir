@@ -138,6 +138,15 @@ module.exports = function requireDir(dir, opts) {
         }
     }
 
+    // If ES2015 Map should be returned instead of a plain object
+    if (opts.esMap) {
+        var key, esMap = new Map();
+        for (key of Object.keys(map)) {
+            esMap.set(key, map[key]);
+        }
+        map = esMap;
+    }
+
     return map;
 };
 
