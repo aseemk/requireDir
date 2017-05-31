@@ -46,7 +46,7 @@ module.exports = function requireDir(dir, opts) {
     // to the map using the full filename as a key also.
     var map = {};
 
-    for (var base in Object.keys(filesForBase)) {
+    for (var base of Object.keys(filesForBase)) {
 
         // go through the files for this base and check for directories. we'll
         // also create a hash "set" of the non-dir files so that we can
@@ -88,7 +88,7 @@ module.exports = function requireDir(dir, opts) {
         }
 
         // otherwise, go through and try each require.extension key!
-        for (ext in Object.keys(require.extensions)) {
+        for (ext of Object.keys(require.extensions)) {
             // if a file exists with this extension, we'll require() it:
             var file = base + ext;
             var path = filesMinusDirs[file];
