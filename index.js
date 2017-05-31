@@ -92,12 +92,7 @@ module.exports = function requireDir(dir, opts) {
         }
 
         // otherwise, go through and try each require.extension key!
-        for (ext in require.extensions) {
-            // again protect against enumerable object prototype extensions:
-            if (!require.extensions.hasOwnProperty(ext)) {
-                continue;
-            }
-
+        for (ext in Object.keys(require.extensions)) {
             // if a file exists with this extension, we'll require() it:
             var file = base + ext;
             var path = filesMinusDirs[file];
