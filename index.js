@@ -48,7 +48,7 @@ module.exports = function requireDir(dir, opts) {
 
     for (var base in filesForBase) {
         // protect against enumerable object prototype extensions:
-        if (!filesForBase.hasOwnProperty(base)) {
+        if (!Object.prototype.hasOwnProperty.call(filesForBase, base)) {
             continue;
         }
 
@@ -94,7 +94,7 @@ module.exports = function requireDir(dir, opts) {
         // otherwise, go through and try each require.extension key!
         for (ext in require.extensions) {
             // again protect against enumerable object prototype extensions:
-            if (!require.extensions.hasOwnProperty(ext)) {
+            if (!Object.prototype.hasOwnProperty.call(require.extensions, ext)) {
                 continue;
             }
 
