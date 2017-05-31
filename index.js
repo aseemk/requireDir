@@ -46,11 +46,7 @@ module.exports = function requireDir(dir, opts) {
     // to the map using the full filename as a key also.
     var map = {};
 
-    for (var base in filesForBase) {
-        // protect against enumerable object prototype extensions:
-        if (!filesForBase.hasOwnProperty(base)) {
-            continue;
-        }
+    for (var base in Object.keys(filesForBase)) {
 
         // go through the files for this base and check for directories. we'll
         // also create a hash "set" of the non-dir files so that we can
