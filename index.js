@@ -115,12 +115,18 @@ module.exports = function requireDir(dir, opts) {
                 // has higher priority than any that follow it). if duplicates
                 // aren't wanted, we're done with this basename.
                 if (opts.duplicates) {
-                    map[file] = require(path);
+					map[file] = require(path);
+					if(opts.params && map[file].apply){
+						map[file] = map[file].apply(this,opts.params);
+					}
                     if (!map[base]) {
                         map[base] = map[file];
                     }
                 } else {
-                    map[base] = require(path);
+					map[base] = require(path);
+					if(opts.params && map[base].apply){
+						map[base] = map[base].apply(this,opts.params);
+					}
                     break;
                 }
             }
