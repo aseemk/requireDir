@@ -10,7 +10,7 @@ assert.deepEqual(requireDir('./simple'), {
 // now register CoffeeScript and do it again:
 // note that CoffeeScript shouldn't be used by any other tests! we can't rely
 // on ordering of tests, and require.extensions and require.cache are global.
-require('coffee-script');
+require('coffee-script/register');
 assert.deepEqual(requireDir('./simple'), {
     a: 'a',
     b: 'b',
