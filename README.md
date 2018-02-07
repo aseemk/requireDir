@@ -103,7 +103,7 @@ requireDir('./dir', {
 
 ```js
 requireDir('./dir', {
-  mapValue: function (value, fileName) {
+  mapValue: function (value, baseName) {
     return typeof value === 'string' ? value.toUpperCase() : value;
   }
 })
