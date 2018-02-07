@@ -83,6 +83,14 @@ be the same by default, but specifying `duplicates: true` would yield:
 }
 ```
 
+`filter`: Apply a filter on the filename before require-ing. For example:
+
+```js
+requiredir('./dir', function (f) { return process.env.NODE_ENV !== 'production' && !f.match(/$dev/); })
+```
+
+This will ignore files prefixed with `dev` if running in a production environment.
+
 There might be more options in the future. ;)
 
 ## Tips
