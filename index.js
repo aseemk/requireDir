@@ -8,7 +8,7 @@ var Path = require('path');
 // paths. this only works if a fresh version of this module is run on every
 // require(), so important: we clear the require() cache each time!
 var parent = module.parent;
-var parentFile = parent.filename;
+var parentFile = parent.filename || "";
 var parentDir = Path.dirname(parentFile);
 delete require.cache[__filename];
 
