@@ -22,12 +22,13 @@ dir
 `requireDir('./dir')` will return the equivalent of:
 
 ```js
-{ a: require('./dir/a.js')
-, b: require('./dir/b.json')
+{
+  a: require('./dir/a.js'),
+  b: require('./dir/b.json')
 }
 ```
 
-And if CoffeeScript has been registered via `require('coffee-script/register')`,
+If CoffeeScript is registered via `require('coffee-script/register')`,
 `c.coffee` will also be returned. Any extension registered with node will work the same way without any additional configuration.
 
 ## Installation
@@ -51,7 +52,7 @@ var dir = requireDir('./path/to/dir');
 You can optionally customize the behavior by passing an extra options object:
 
 ```js
-var dir = requireDir('./path/to/dir', {recurse: true});
+var dir = requireDir('./path/to/dir', { recurse: true });
 ```
 
 ## Options
@@ -59,25 +60,6 @@ var dir = requireDir('./path/to/dir', {recurse: true});
 `recurse`: Whether to recursively `require()` subdirectories too.
 (`node_modules` within subdirectories will be ignored.)
 Default is false.
-
-`duplicates`: By default, if multiple files share the same basename, only the
-highest priority one is `require()`'d and returned. (Priority is determined by
-the order of `require.extensions` keys, with directories taking precedence
-over files if `recurse` is true.) Specifying this option `require()`'s all
-files and returns full filename keys in addition to basename keys.
-Default is false.
-
-E.g. in the example above, if there were also an `a.json`, the behavior would
-be the same by default, but specifying `duplicates: true` would yield:
-
-```js
-{ a: require('./dir/a.js')
-, 'a.js': require('./dir/a.js')
-, 'a.json': require('./dir/a.json')
-, b: require('./dir/b.json')
-, 'b.json': require('./dir/b.json')
-}
-```
 
 `filter`: Apply a filter on the filename before require-ing. For example, ignoring files prefixed with `dev` in a production environment:
 
@@ -109,10 +91,29 @@ requireDir('./dir', {
 })
 ```
 
+`duplicates`: By default, if multiple files share the same basename, only the
+highest priority one is `require()`'d and returned. (Priority is determined by
+the order of `require.extensions` keys, with directories taking precedence
+over files if `recurse` is true.) Specifying this option `require()`'s all
+files and returns full filename keys in addition to basename keys.
+Default is false.
+
+In the example above, if there were also an `a.json`, the behavior would
+be the same by default, but specifying `duplicates: true` would yield:
+
+```js
+{
+  a: require('./dir/a.js'),
+  'a.js': require('./dir/a.js'),
+  'a.json': require('./dir/a.json'),
+  b: require('./dir/b.json'),
+  'b.json': require('./dir/b.json')
+}
+```
+
 ## Tips
 
-If you want to `require()` the same directory in multiple places, you can do
-this in the directory itself! Just make an `index.js` file with the following:
+Make an `index.js` in a directory with this code to clean things up:
 
 ```js
 module.exports = require('require-dir')();   // defaults to '.'
