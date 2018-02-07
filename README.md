@@ -119,23 +119,3 @@ module.exports = require('require-dir')();   // defaults to '.'
 ```
 
 And don't worry, the calling file is always ignored to prevent infinite loops.
-
-## TODO
-
-It'd be awesome if this could work with the regular `require()`, e.g. like a
-regular `require()` hook. Not sure that's possible though; directories are
-already special-cased to look for an `index` file or `package.json`.
-
-An `ignore` option would be nice: a string or regex, or an array of either or
-both, of paths, relative to the directory, to ignore. String paths can be
-extensionless to ignore all extensions for that path. Supporting shell-style
-globs in string paths would be nice.
-
-Currently, basenames are derived for directories too — e.g. a directory named
-`a.txt` will be returned as `a` when recursing — but should that be the case?
-Maybe directories should always be returned by their full name, and/or maybe
-this behavior should be customizable. This is hopefully an edge case.
-
-## License
-
-MIT. &copy; 2012-2015 Aseem Kishore.
