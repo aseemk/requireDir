@@ -133,6 +133,44 @@ module.exports = function requireDir(dir, opts) {
         }
     }
 
+    if(opts.append) {
+
+        for(var base in map) {
+            // protect against enumerable object prototype extensions:
+            if (!map.hasOwnProperty(base)) {
+                continue;
+            }
+
+            map[base + opts.append] = map[base];
+            if(opts.cleanup) {
+                delete map[base];
+            }
+        }
+
+    }
+
+    if(opts.prepend) {
+
+        for(var base in map) {
+            // protect against enumerable object prototype extensions:
+            if (!map.hasOwnProperty(base)) {
+                continue;
+            }
+
+            map[opts.prepend + base] = map[base];
+            if(opts.cleanup) {
+                delete map[base];
+            }
+        }
+
+    }
+
+    // if transform:camelcase is set, skip the old way to avoid clutter
+    if(opts.transform && opts.transform.indexOf('camelcase') !== -1) {
+        opts.camelcase = false;
+    }
+
+    // kept for compatibility reasons
     if (opts.camelcase) {
         for (var base in map) {
             // protect against enumerable object prototype extensions:
@@ -141,6 +179,30 @@ module.exports = function requireDir(dir, opts) {
             }
 
             map[toCamelCase(base)] = map[base];
+        }
+    }
+
+    if(opts.transform) {
+
+        for(var base in map) {
+            // protect against enumerable object prototype extensions:
+            if (!map.hasOwnProperty(base)) {
+                continue;
+            }
+
+            var transformedBase = base;
+            if(opts.transform.indexOf('camelcase') !== -1) {
+                transformedBase = toCamelCase(transformedBase);
+            }
+
+            if(opts.transform.indexOf('ucfirst') !== -1) {
+                transformedBase = transformedBase.split('').shift().toUpperCase() + transformedBase.slice(1);
+            }
+
+            map[transformedBase] = map[base];
+            if(opts.cleanup && transformedBase !== base) {
+                delete map[base];
+            }
         }
     }
 
