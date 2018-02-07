@@ -1,15 +1,15 @@
 // requireDir.js
 // See README.md for details.
 
-var FS = require('fs');
-var Path = require('path');
+var fs = require('fs');
+var path = require('path');
 
 // make a note of the calling file's path, so that we can resolve relative
 // paths. this only works if a fresh version of this module is run on every
 // require(), so important: we clear the require() cache each time!
 var parent = module.parent;
 var parentFile = parent.filename;
-var parentDir = Path.dirname(parentFile);
+var parentDir = path.dirname(parentFile);
 delete require.cache[__filename];
 
 module.exports = function requireDir(dir, opts) {
@@ -17,14 +17,12 @@ module.exports = function requireDir(dir, opts) {
     dir = dir || '.';
     opts = opts || {};
 
-    opts.filter = opts.filter || function (file) { return true; };
-
     // resolve the path to an absolute one:
-    dir = Path.resolve(parentDir, dir);
+    dir = path.resolve(parentDir, dir);
 
     // read the directory's files:
     // note that this'll throw an error if the path isn't a directory.
-    var files = FS.readdirSync(dir);
+    var files = fs.readdirSync(dir);
 
     // to prioritize between multiple files with the same basename, we'll
     // first derive all the basenames and create a map from them to files:
@@ -32,9 +30,8 @@ module.exports = function requireDir(dir, opts) {
 
     for (var i = 0; i < files.length; i++) {
         var file = files[i];
-        var ext = Path.extname(file);
-        var base = Path.basename(file, ext);
-
+        var ext = path.extname(file);
+        var base = path.basename(file, ext);
         (filesForBase[base] = filesForBase[base] || []).push(file);
     }
 
@@ -62,24 +59,24 @@ module.exports = function requireDir(dir, opts) {
 
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
-            var path = Path.resolve(dir, file);
+            var abs = path.resolve(dir, file);
 
             // ignore the calling file:
-            if (path === parentFile) {
+            if (abs === parentFile) {
                 continue;
             }
             // apply file filter:
-            if (!opts.filter(path)) {
+            if (opts.filter && !opts.filter(abs)) {
                 continue;
             }
 
-            if (FS.statSync(path).isDirectory()) {
+            if (fs.statSync(abs).isDirectory()) {
                 if (opts.recurse) {
                     if (base === 'node_modules') {
                         continue;
                     }
 
-                    map[base] = requireDir(path, opts);
+                    map[base] = requireDir(abs, opts);
 
                     // if duplicates are wanted, key off the full name too:
                     if (opts.duplicates) {
@@ -87,7 +84,7 @@ module.exports = function requireDir(dir, opts) {
                     }
                 }
             } else {
-                filesMinusDirs[file] = path;
+                filesMinusDirs[file] = abs;
             }
         }
 
@@ -107,12 +104,12 @@ module.exports = function requireDir(dir, opts) {
 
             // if a file exists with this extension, we'll require() it:
             var file = base + ext;
-            var path = filesMinusDirs[file];
+            var abs = filesMinusDirs[file];
 
-            if (path) {
+            if (abs) {
                 // ignore TypeScript declaration files. They should never be
                 // `require`d
-                if (/\.d\.ts$/.test(path)) {
+                if (/\.d\.ts$/.test(abs)) {
                     continue;
                 }
 
@@ -121,34 +118,30 @@ module.exports = function requireDir(dir, opts) {
                 // has higher priority than any that follow it). if duplicates
                 // aren't wanted, we're done with this basename.
                 if (opts.duplicates) {
-                    map[file] = require(path);
+                    map[file] = require(abs);
                     if (!map[base]) {
                         map[base] = map[file];
                     }
                 } else {
-                    map[base] = require(path);
+                    map[base] = require(abs);
                     break;
                 }
             }
         }
     }
 
-    if (opts.camelcase) {
+    if (opts.mapKey || opts.mapValue) {
         for (var base in map) {
             // protect against enumerable object prototype extensions:
             if (!map.hasOwnProperty(base)) {
                 continue;
             }
 
-            map[toCamelCase(base)] = map[base];
+            var newKey = opts.mapKey ? opts.mapKey(map[base], base) : base;
+            var newVal = opts.mapValue ? opts.mapValue(map[base], newKey) : map[base];
+            delete map[base];
+            map[newKey] = newVal;
         }
     }
-
     return map;
 };
-
-function toCamelCase(str) {
-    return str.replace(/[_-][a-z]/ig, function (s) {
-        return s.substring(1).toUpperCase();
-    });
-}

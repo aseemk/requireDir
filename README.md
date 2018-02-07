@@ -28,7 +28,7 @@ dir
 ```
 
 And if CoffeeScript has been registered via `require('coffee-script/register')`,
-`c.coffee` will also be returned.
+`c.coffee` will also be returned. Any extension registered with node will work the same way without any additional configuration.
 
 ## Installation
 
@@ -60,10 +60,6 @@ var dir = requireDir('./path/to/dir', {recurse: true});
 (`node_modules` within subdirectories will be ignored.)
 Default is false.
 
-`camelcase`: Automatically add camelcase aliases for files with dash- and
-underscore-separated names. E.g. `foo-bar.js` will be exposed under both the
-original `'foo-bar'` name as well as a `'fooBar'` alias. Default is false.
-
 `duplicates`: By default, if multiple files share the same basename, only the
 highest priority one is `require()`'d and returned. (Priority is determined by
 the order of `require.extensions` keys, with directories taking precedence
@@ -83,15 +79,35 @@ be the same by default, but specifying `duplicates: true` would yield:
 }
 ```
 
-`filter`: Apply a filter on the filename before require-ing. For example:
+`filter`: Apply a filter on the filename before require-ing. For example, ignoring files prefixed with `dev` in a production environment:
 
 ```js
-requiredir('./dir', function (f) { return process.env.NODE_ENV !== 'production' && !f.match(/$dev/); })
+requireDir('./dir', {
+  filter: function (fullPath) {
+    return process.env.NODE_ENV !== 'production' && !fullPath.match(/$dev/);
+  }
+})
 ```
 
-This will ignore files prefixed with `dev` if running in a production environment.
+`mapKey`: Apply a transform to the module base name after require-ing. For example, uppercasing any module names:
 
-There might be more options in the future. ;)
+```js
+requireDir('./dir', {
+  mapKey: function (value, baseName) {
+    return baseName.toUpperCase();
+  }
+})
+```
+
+`mapValue`: Apply a transform to the value after require-ing. For example, uppercasing any text exported:
+
+```js
+requireDir('./dir', {
+  mapValue: function (value, fileName) {
+    return typeof value === 'string' ? value.toUpperCase() : value;
+  }
+})
+```
 
 ## Tips
 
