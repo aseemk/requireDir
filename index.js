@@ -80,7 +80,7 @@ module.exports = function requireDir(dir, opts) {
                     }
 
                     map[base] = requireDir(path, opts);
-
+                    map[base].is_directory = true;
                     // if duplicates are wanted, key off the full name too:
                     if (opts.duplicates) {
                         map[file] = map[base];
