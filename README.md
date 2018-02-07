@@ -82,6 +82,14 @@ be the same by default, but specifying `duplicates: true` would yield:
 , 'b.json': require('./dir/b.json')
 }
 ```
+`ignore`: `string RegExp | Array(string RegExp[, string RegExp...])` - a pattern,
+or an array of patterns, used to exclude files, matching them.
+Format of a pattern: `string` or `string` representation of JS `RegExp`. Examples:
+
+- `ignore: ".tst.js"` - excludes files like "foo.tst.js" or any other, having ".tst.js"
+in it's path.
+- `ignore: [".tst.js",".es6.js"]` - excludes files like "foo.tst.js" or "foo.es6.js" or any other,
+having the patterns in it's path.
 
 `filter`: Apply a filter on the filename before require-ing. For example:
 
