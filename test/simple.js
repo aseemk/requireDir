@@ -1,10 +1,17 @@
 var assert = require('assert');
 var requireDir = require('..');
 
+// should try for directories in case they have index file,
+// but should not fail if the do not
+assert.doesNotThrow(function () {
+    requireDir('./simple');
+});
+
 // first test regularly:
 assert.deepEqual(requireDir('./simple'), {
     a: 'a',
     b: 'b',
+    g: 'g',
 });
 
 // now register CoffeeScript and do it again:
@@ -15,6 +22,7 @@ assert.deepEqual(requireDir('./simple'), {
     a: 'a',
     b: 'b',
     c: 'c',
+    g: 'g',
 });
 
 // now register TypeScript and do it again:
@@ -25,6 +33,7 @@ assert.deepEqual(requireDir('./simple'), {
     b: 'b',
     c: 'c',
     e: 'e',
+    g: 'g',
 });
 
 console.log('Simple tests passed.');

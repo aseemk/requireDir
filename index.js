@@ -71,17 +71,23 @@ module.exports = function requireDir(dir, opts) {
             }
 
             if (fs.statSync(abs).isDirectory()) {
+                if (base === 'node_modules') {
+                    continue;
+                }
+
                 if (opts.recurse) {
-                    if (base === 'node_modules') {
+                    map[base] = requireDir(abs, opts);
+                } else {
+                    try {
+                        map[base] = require(abs);
+                    } catch (e) {
                         continue;
                     }
+                }
 
-                    map[base] = requireDir(abs, opts);
-
-                    // if duplicates are wanted, key off the full name too:
-                    if (opts.duplicates) {
-                        map[file] = map[base];
-                    }
+                // if duplicates are wanted, key off the full name too:
+                if (opts.duplicates) {
+                    map[file] = map[base];
                 }
             } else {
                 filesMinusDirs[file] = abs;
