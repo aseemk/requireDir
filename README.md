@@ -111,6 +111,12 @@ be the same by default, but specifying `duplicates: true` would yield:
 }
 ```
 
+`noCache`: Prevent file caching. Could be useful using gulp.watch or other watch requiring refreshed file content Default is false.
+
+```js
+requireDir('./dir', { noCache: true })
+```
+
 ## Tips
 
 Make an `index.js` in a directory with this code to clean things up:

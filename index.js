@@ -113,6 +113,11 @@ module.exports = function requireDir(dir, opts) {
                     continue;
                 }
 
+                // delete cache
+                if (opts.noCache) {
+                    delete require.cache[abs];
+                }
+
                 // if duplicates are wanted, key off the full name always, and
                 // also the base if it hasn't been taken yet (since this ext
                 // has higher priority than any that follow it). if duplicates
