@@ -45,6 +45,9 @@ module.exports = function requireDir(dir, opts) {
     // to the map using the full filename as a key also.
     var map = {};
 
+    // get the array of extensions we need to require
+    var extensions = opts.extensions || Object.keys(require.extensions);
+
     for (var base in filesForBase) {
         // protect against enumerable object prototype extensions:
         if (!filesForBase.hasOwnProperty(base)) {
@@ -95,13 +98,7 @@ module.exports = function requireDir(dir, opts) {
         }
 
         // otherwise, go through and try each require.extension key!
-        for (ext in require.extensions) {
-            // Node v8+ uses "clean" objects w/o hasOwnProperty for require
-            // again protect against enumerable object prototype extensions:
-            if (!Object.prototype.hasOwnProperty.call(require.extensions, ext)) {
-                continue;
-            }
-
+        for (ext of extensions) {
             // if a file exists with this extension, we'll require() it:
             var file = base + ext;
             var abs = filesMinusDirs[file];
