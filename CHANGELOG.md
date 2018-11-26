@@ -1,3 +1,8 @@
+## 1.2.0
+
+- extensions option added
+
+
 ## 1.0.0
 
 - mapValue option added
