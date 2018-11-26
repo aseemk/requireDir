@@ -117,6 +117,12 @@ be the same by default, but specifying `duplicates: true` would yield:
 requireDir('./dir', { noCache: true })
 ```
 
+`extensions`: Array of extensions to look for instead of using `require.extensions`.
+
+```js
+requireDir('./dir', { extensions: ['.js', '.json'] })
+```
+
 ## Tips
 
 Make an `index.js` in a directory with this code to clean things up:
