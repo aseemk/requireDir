@@ -1,5 +1,5 @@
 {
-  "name": "import-dir",
+  "name": "@yimura/import-dir",
   "description": "Helper to import() directories.",
   "version": "0.1.0",
   "author": "yimura <andreas.maerten@scarlet.be>",

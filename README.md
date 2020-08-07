@@ -32,7 +32,7 @@ dir
 ## Installation
 
 ```
-npm install import-dir
+npm install @yimura/import-dir
 ```
 
 ## Usage
