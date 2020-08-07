@@ -1,24 +1,16 @@
 {
-  "name": "require-dir",
-  "description": "Helper to require() directories.",
-  "version": "1.2.0",
-  "author": "Aseem Kishore <aseem.kishore@gmail.com>",
+  "name": "import-dir",
+  "description": "Helper to import() directories.",
+  "version": "0.1.0",
+  "author": "yimura <andreas.maerten@scarlet.be>",
   "license": "MIT",
   "dependencies": {},
-  "devDependencies": {
-    "coffee-script": "^1.3.3",
-    "ts-node": "^1.3.0",
-    "typescript": "^1.8.0"
-  },
   "engines": {
     "node": "*"
   },
-  "scripts": {
-    "test": "node test"
-  },
-  "homepage": "https://github.com/aseemk/requireDir",
+  "homepage": "https://github.com/Damon-Org/importDir",
   "repository": {
     "type": "git",
-    "url": "git://github.com/aseemk/requireDir.git"
+    "url": "https://github.com/Damon-Org/importDir.git"
   }
 }
