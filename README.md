@@ -74,7 +74,7 @@ let dir = importDir('/path/to/dir', { recurse: true });
 
 ## Options
 
-`recurse`: Whether to recursively `require()` subdirectories too.
+`recurse`: Whether to recursively `import()` subdirectories too.
 (`node_modules` within subdirectories will be ignored.)
 Default is false.
 
