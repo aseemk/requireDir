@@ -25,7 +25,8 @@ dir
 
 ```js
 {
-  a: Promise<import('./dir/a.js')>
+  a: Promise<import('./dir/a.js')>,
+  e: Promise<import('./dir/e.js')>
 }
 ```
 
@@ -40,7 +41,8 @@ npm install @yimura/import-dir
 Basic usage that examines only directories' immediate files:
 
 ```js
-import importDir from 'import-dir';
+import importDir from 'import-dir'
+// import importDir from '@yimura/import-dir'
 
 let dir = importDir('./path/to/dir');
 ```
