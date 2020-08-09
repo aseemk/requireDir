@@ -1,17 +1,15 @@
 if (typeof require === 'function') {
-    throw new Error('RequireDir can only be imported as an ES Module');
+    throw new Error('ImportDir can only be imported as an ES Module');
 }
 
 import fs from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
 
 const importDir = (directory = '.', options = {}) => {
-    const
-        __filename = fileURLToPath(import.meta.url),
-        __dirname = path.dirname(__filename);
+    if (directory.startsWith('.')) {
+        throw new Error('Relative paths are not supported, please resolve your relative path to an absolute path.');
 
-    directory = path.resolve(__dirname, directory);
+        return null;
+    }
 
     const
         files = fs.readdirSync(directory),
