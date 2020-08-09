@@ -14,6 +14,16 @@ Following (beta):
 
 Major versions starting with a **0** will have **minor** interpreted as major's and a bump of this number will be seen as a total rewrite
 
+## 2020-08-09, Version 0.1.2 (ccb0459a4204c594bed34dc916e08a611a85b474)
+
+### Changes
+
+ * Set type of module in package.json to `module`
+
+### Commits
+
+ * ccb0459a4204c594bed34dc916e08a611a85b474 Package: Set type module and version bump
+
 ## 2020-08-07, Version 0.1.1 (1b9e6bb4a1abe3def3b246be295031f84f9c50b1)
 
 ### Changes
