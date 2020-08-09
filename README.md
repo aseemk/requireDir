@@ -22,7 +22,7 @@ You can use resolve to get the absolute path of a relative path.
 
 ```js
 import { resolve } from 'path'
-import importDir from 'import-dir'
+import importDir from '@yimura/import-dir'
 
 const import = importDir(resolve('./dir/'));
 ```
@@ -61,7 +61,7 @@ Basic usage that examines only directories' immediate files:
 
 ```js
 import { resolve } from 'path'
-import importDir from 'import-dir'
+import importDir from '@yimura/import-dir'
 
 let dir = importDir(resolve('./path/to/dir'));
 ```
