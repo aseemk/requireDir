@@ -3,6 +3,7 @@ if (typeof require === 'function') {
 }
 
 import fs from 'fs'
+import path from 'path'
 
 const importDir = (directory = '.', options = {}) => {
     if (directory.startsWith('.')) {
