@@ -14,6 +14,16 @@ Following (beta):
 
 Major versions starting with a **0** will have **minor** interpreted as major's and a bump of this number will be seen as a total rewrite
 
+## 2020-08-09, Version 0.1.3 (70caf89bccbfe125ccea72e4511a4ec76c7421a7)
+
+### Changes
+
+ * Added bugs field in package.json
+
+### Commits
+
+ * 70caf89bccbfe125ccea72e4511a4ec76c7421a7 Package: Added bugs and keywords keys
+
 ## 2020-08-09, Version 0.1.2 (ccb0459a4204c594bed34dc916e08a611a85b474)
 
 ### Changes
