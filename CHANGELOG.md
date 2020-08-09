@@ -14,6 +14,28 @@ Following (beta):
 
 Major versions starting with a **0** will have **minor** interpreted as major's and a bump of this number will be seen as a total rewrite
 
+## 2020-08-09, Version 0.1.5 ()
+
+### Changes
+
+ * Added path import that was forgotten
+
+### Commits
+
+ * 2cbca7bbdea33f9165969104b2d8fd7ecc62e0f1 Source: Forgot path import
+
+## 2020-08-09, Version 0.1.4 (2daa407c3bb3aec06bc229cb07ed7fd78011c46e)
+
+### Changes
+
+ * Removed relative path support and added a proposed solution.
+
+### Commits
+
+ * 2daa407c3bb3aec06bc229cb07ed7fd78011c46e Package: Version bump
+ * 9d533926cea4cdecacccbdefc01d480babfbcb9f Readme: Updated to notify users that relative paths are not available
+ * 96430ec110331d994d033ad497a2df8e3772f580 Source: Modified module to not support relative paths
+
 ## 2020-08-09, Version 0.1.3 (70caf89bccbfe125ccea72e4511a4ec76c7421a7)
 
 ### Changes
