@@ -61,12 +61,12 @@ const importDir = (directory = '.', options = {}) => {
 
             if (abs) {
                 if (options.noCache) {
-                    map[base] = import(`${abs}?r=${Date.now()}`);
+                    map[base] = import(`file://${abs}?r=${Date.now()}`);
 
                     break;
                 }
 
-                map[base] = import(abs);
+                map[base] = import(`file://${abs}`);
                 break;
             }
         }
