@@ -1,7 +1,7 @@
 {
     "name": "@yimura/import-dir",
     "description": "Helper to import() directories.",
-    "version": "0.1.7",
+    "version": "0.1.9",
     "author": "yimura <andreas.maerten@scarlet.be>",
     "license": "MIT",
     "type": "module",
