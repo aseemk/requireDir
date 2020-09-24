@@ -42,10 +42,14 @@ const importDir = (directory = '.', options = {}) => {
 
             if (fs.statSync(abs).isDirectory()) {
                 if (options.recurse && base != 'node_modules') {
-                    if (options.recurseDepth && options.recurseDepth > options.currentDepth) {
-                        const currentDepth = options.currentDepth ? options.currentDepth+1 : 1;
+                    if (options.recurseDepth) {
+                        options.currentDepth = options.currentDepth ? options.currentDepth : 0;
 
-                        map[base] = importDir(abs, Object.assign(options, { currentDepth }));
+                        if (options.recurseDepth > options.currentDepth) {
+                            const currentDepth = options.currentDepth ? options.currentDepth+1 : 1;
+
+                            map[base] = importDir(abs, Object.assign(options, { currentDepth }));
+                        }
                     }
                     else map[base] = importDir(abs, options);
                 }
