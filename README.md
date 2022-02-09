@@ -128,9 +128,10 @@ requireDir('./dir', { extensions: ['.js', '.json'] })
 ```txt
 ./
  ┣ modules
- ┃ ┣ a.js
  ┃ ┣ b.js
+ ┃ ┣ c.js
  ┃ ┗ index.js
+ ┣ a.js
  ┗ app.js
 ```
 
@@ -139,6 +140,7 @@ requireDir('./', { indexFile: true })
 
 // Return
 {
+  a: require('./a.js'),
   modules: require('./modules')
 }
 ```
