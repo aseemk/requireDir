@@ -123,6 +123,26 @@ requireDir('./dir', { noCache: true })
 requireDir('./dir', { extensions: ['.js', '.json'] })
 ```
 
+`indexFile`: Allow import index file in path without `recurse`
+
+```txt
+./
+ ┣ modules
+ ┃ ┣ a.js
+ ┃ ┣ b.js
+ ┃ ┗ index.js
+ ┗ app.js
+```
+
+```js
+requireDir('./', { indexFile: true })
+
+// Return
+{
+  modules: require('./modules')
+}
+```
+
 ## Tips
 
 Make an `index.js` in a directory with this code to clean things up:
