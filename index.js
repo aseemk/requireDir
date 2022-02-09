@@ -85,6 +85,9 @@ module.exports = function requireDir(dir, opts) {
                     if (opts.duplicates) {
                         map[file] = map[base];
                     }
+                } else if (opts.indexFile) {
+                    // if indexFile allow, keep abs to import index file in path
+                    filesMinusDirs[file] = abs
                 }
             } else {
                 filesMinusDirs[file] = abs;
@@ -102,11 +105,16 @@ module.exports = function requireDir(dir, opts) {
             // if a file exists with this extension, we'll require() it:
             var file = base + ext;
             var abs = filesMinusDirs[file];
+            
+            if (opts.indexFile && filesMinusDirs[base]) {
+                file = base;
+                abs = filesMinusDirs[base]
+            }
 
             if (abs) {
                 // ignore TypeScript declaration files. They should never be
                 // `require`d
-                if (/\.d\.ts$/.test(abs)) {
+                if (/\.d\.ts$/.test(abs) && !fs.statSync(abs).isDirectory()) {
                     continue;
                 }
 
